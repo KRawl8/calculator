@@ -70,6 +70,10 @@ body {
     align-items: center;
 }
 
+.buttons .operator {
+    border: 3px solid rgb(0, 0, 116);
+}
+
 .bigButton {
     width: 75%;
     margin: 3%;
@@ -78,5 +82,24 @@ body {
 .smallButton {
     width: 20%;
     margin: 1% 2%;
+}
 
+.bigButton:hover {
+    border-color: red;
+}
+
+.smallButton:hover {
+    background-color: rgb(207, 207, 207);
+}
+
+.bigButton:active {
+    background-color: rgb(109, 0, 0);
+}
+
+.smallButton:active {
+    background-color: gray;
+}
+
+.operator:hover {
+    background-color: rgb(95, 156, 235);
 }

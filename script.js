@@ -46,17 +46,20 @@ numButtons.forEach((button) => {
         }
         
         display.textContent = mostRecentNum; // Updates the display
-        // console.log(display.textContent);
-        // console.log(button.textContent);
-        // console.log(mostRecentNum);
     }); 
 });
 
 const operatorButtons = document.querySelectorAll('.operator');
 operatorButtons.forEach((button) => {
     button.addEventListener('click', () => {
+        let length = smallDisplay.textContent.length;
+        let lastChar = smallDisplay.textContent.charAt(length -1);
+        if (lastChar >= '0' && lastChar <= '9') { // If the smallDisplay ends in a number the answer replaces it
+            smallDisplay.textContent = mostRecentNum;
+        } else {
+            smallDisplay.textContent += mostRecentNum; // Allows for multiple operation equations
+        }
         numArray.push(mostRecentNum);
-        smallDisplay.textContent += mostRecentNum;
         switch(button.textContent) {
             case '÷':
                 operationArray.push(divide);
@@ -76,7 +79,6 @@ operatorButtons.forEach((button) => {
                 break;
         }
         mostRecentNum = 0;
-        console.log(operationArray);
     })
 })
 
@@ -84,18 +86,15 @@ const equals = document.querySelector('.equals');
 equals.addEventListener('click', () => {
     smallDisplay.textContent += mostRecentNum;
     numArray.push(mostRecentNum);
-    console.log(numArray);
     for (let i = 0; i < operationArray.length; i++) {
         
         mostRecentNum = operationArray[i](Number(numArray[i]), Number(numArray[i + 1]));
         numArray[i + 1] = mostRecentNum;
-        
-        console.log(mostRecentNum);
-        console.log(numArray);
     }
 
     numArray = [];
     operationArray = [];
     
-    display.textContent = mostRecentNum;
+    roundedAnswer = Math.round(mostRecentNum * 1000) / 1000;
+    display.textContent = roundedAnswer;
 })
