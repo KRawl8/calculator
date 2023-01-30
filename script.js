@@ -18,66 +18,84 @@ const operate = (operationFunction, num1, num2) => {
     return operationFunction(num1, num2);
 }
 
-let firstNum = 0;
+let numArray = [];
 let operationArray = [];
-let displayValue = 0;
+let mostRecentNum = 0;
 
 const smallDisplay = document.querySelector('.secondaryDisplay');
 
 const display = document.querySelector('.display');
-display.textContent = displayValue;
+display.textContent = mostRecentNum;
+
+const clearButton = document .querySelector('.clear');
+clearButton.addEventListener('click', () => {
+    mostRecentNum = 0;
+    numArray = [];
+    operationArray = [];
+    display.textContent = mostRecentNum;
+    smallDisplay.textContent = undefined;
+})
 
 const numButtons = document.querySelectorAll('.number'); //When the numbers are clicked they update the display
 numButtons.forEach((button) => {
     button.addEventListener('click', () => {
-        if (displayValue === 0) {
-            displayValue = button.textContent;
+        if (mostRecentNum === 0) {
+            mostRecentNum = button.textContent;
         } else {
-            displayValue += button.textContent;
+            mostRecentNum += button.textContent;
         }
         
-        display.textContent = displayValue;
+        display.textContent = mostRecentNum; // Updates the display
         // console.log(display.textContent);
         // console.log(button.textContent);
-        // console.log(displayValue);
+        // console.log(mostRecentNum);
     }); 
 });
 
 const operatorButtons = document.querySelectorAll('.operator');
 operatorButtons.forEach((button) => {
     button.addEventListener('click', () => {
-        firstNum = displayValue;
-        smallDisplay.textContent += displayValue;
-        // console.log(firstNum);
+        numArray.push(mostRecentNum);
+        smallDisplay.textContent += mostRecentNum;
         switch(button.textContent) {
             case '÷':
-                operationArray[0] = divide;
+                operationArray.push(divide);
                 smallDisplay.textContent += ' ÷ '; 
                 break;
             case 'x':
-                operationArray[0] = multiply;
+                operationArray.push(multiply);
                 smallDisplay.textContent += ' x ';
                 break;
             case '-':
-                operationArray[0] = subtract;
+                operationArray.push(subtract);
                 smallDisplay.textContent += ' - ';
                 break;
             case '+':
-                operationArray[0] = add;
+                operationArray.push(add);
                 smallDisplay.textContent += ' + ';
                 break;
         }
-        displayValue = 0;
+        mostRecentNum = 0;
         console.log(operationArray);
     })
 })
 
 const equals = document.querySelector('.equals');
 equals.addEventListener('click', () => {
-    smallDisplay.textContent += displayValue;
-    displayValue = operationArray[0](Number(firstNum), Number(displayValue));
-    display.textContent = displayValue;
-})
+    smallDisplay.textContent += mostRecentNum;
+    numArray.push(mostRecentNum);
+    console.log(numArray);
+    for (let i = 0; i < operationArray.length; i++) {
+        
+        mostRecentNum = operationArray[i](Number(numArray[i]), Number(numArray[i + 1]));
+        numArray[i + 1] = mostRecentNum;
+        
+        console.log(mostRecentNum);
+        console.log(numArray);
+    }
 
-// let array = [add];
-// console.log(array[0](7,2))
+    numArray = [];
+    operationArray = [];
+    
+    display.textContent = mostRecentNum;
+})
